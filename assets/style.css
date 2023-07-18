@@ -1,0 +1,81 @@
+#sideMenuAdmin {
+  background-color: white;
+	align-items: center;
+	height: calc(100vh - 3rem);
+	width: 100%;
+  box-shadow: 0px 0px 30px -15px var(--color1-light4);
+}
+#myDIVKaryawan {
+  background-color: white;
+  align-items: center;
+  height: calc(100vh - 3rem);
+  width: 100%;
+  box-shadow: 0px 0px 30px -15px var(--color1-light4);
+}
+
+.white-box-with-shadow{
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0px 0px 30px -15px var(--color1-light4);
+}
+
+.buttonku-1 a{
+  text-decoration: none;
+  color: currentColor;
+}
+.buttonku-1,
+.buttonku-1-danger,
+.buttonku-1-primary{
+  text-decoration: none;
+  border-radius: 5px;
+  border: none;
+  transition: all .25s ease;
+  cursor: pointer;
+  padding: 6px 12px;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 1.42857143;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.buttonku-1{
+  background: white;
+  color: #383838;
+  border: 1px solid var(--color-grey2);
+}
+.buttonku-1:hover{
+  background: var(--color-grey1);
+  color: #383838;
+}
+.buttonku-1-danger{
+  background: #d23d3d;
+  color: white;
+}
+.buttonku-1-danger:hover{
+  background: #a83030;
+  color: white;
+}
+.buttonku-1-primary{
+  background: var(--bs-primary);
+  color: white;
+}
+.buttonku-1-primary:hover{
+  background: var(--color1-dark1);
+  color: white;
+}
+
+/* @media (max-width: 990px) {
+  #btnDesktop{
+    display: none;
+  }
+  #rowResponsive{
+    display: flex;
+    gap: 5px;
+  }
+}
+@media (min-width: 991px){
+  #btnMobile{
+    display: none;
+  }
+} */

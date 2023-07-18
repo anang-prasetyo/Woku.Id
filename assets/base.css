@@ -1,0 +1,68 @@
+@import './repair.css';
+@import './style.css';
+@import '../css/bootstrap.css';
+
+:root {
+  --color1: #2385ec;
+
+  --color1-dark1: #1c6abc;
+  --color1-dark2: #165496;
+  --color1-dark3: #0d3560;
+  --color1-dark4: #0a2a4c;
+  --color1-dark5: #030c16;
+  
+  --color1-light1: #3991ed;
+  --color1-light2: #4c9cee;
+  --color1-light3: #81b9f3;
+  --color1-light4: #b3d5f7;
+  --color1-light5: #fafcfe;
+  
+  --color-grey1: #ececec;
+  --color-grey2: #d0d0d0;
+  --color-grey3: #a6a6a6;
+}
+:root {
+  --color-bg: var(--color1-light5);
+}
+
+body{
+  margin: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: var(--color-bg);
+  color: #030c16;
+}
+object{
+  pointer-events: none;
+}
+.shadow-1{
+  box-shadow: 0px 0px 30px -15px var(--color1-light4);
+}
+.shadow-1-danger{
+  box-shadow: 0px 0px 30px -15px var(--bs-danger-bg-subtle);
+}
+.shadow-1-warning{
+  box-shadow: 0px 0px 30px -15px var(--bs-warning-bg-subtle);
+}
+.shadow-1-success{
+  box-shadow: 0px 0px 30px -15px var(--bs-success-bg-subtle);
+}
+#dashboardMenu:hover{
+  cursor: pointer;
+  background: var(--color-grey1) !important;
+}
+
+#navKaryawanMenu{
+  cursor: pointer;
+  color: black;
+}
+#navKaryawanMenu:hover{
+  background: var(--color-grey1);
+}
+/* #mainContent{
+  max-width: 100%;
+} */
+@media (min-width: 576px) { 
+  /* #mainContent{
+    max-width: 80%;
+  } */
+}
