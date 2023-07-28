@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>coba</title>
+	<link rel="stylesheet" href="assets/css/bootstrap.css">
+	<link rel="stylesheet" href="assets/font/bootstrap-icons.css">
+</head>
+<style>
+  .new-style{
+    color: blueviolet;
+    padding: 1rem;
+    background-color: lavender;
+  }
+  .new-style-2{
+    color: palevioletred;
+    padding: 1rem;
+    background-color: lavenderblush;
+  }
+</style>
+<body>
+  <div class="container d-flex flex-column gap-4">
+    <section>
+      <h1>ini halaman coba</h1>
+      <button class="btn btn-light"><a href="barang_laku.php">kembali</a></button>
+    </section>
+    <!-- <section class="d-flex gap-1">
+      <button onclick="addEl()">tambah el</button>
+      <button onclick="addId()">tambah id</button>
+      <button onclick="addClass()">tambah class</button>
+    </section>
+    <section class="d-flex gap-1">
+      <button onclick="delEl()">hapus el</button>
+      <button onclick="delId()">hapus id</button>
+      <button onclick="delClass()">hapus class</button>
+    </section> -->
+    <!-- <section>
+      <button onclick="addElSaja()">add element 1</button>
+    </section> -->
+    <section>
+      <button onclick="addNewElement()">add element</button>
+      <button onclick="delEl()">del element</button>
+    </section>
+    <section>
+      <div>tampil disini</div>
+      <div id="tempatTampil" class=""></div>
+    </section>
+  </div>
+  <script>
+    let countNewEl = 0
+    
+    function addNewElement() {
+      console.log('countNewEl -> ',countNewEl);
+      if (countNewEl == 0){
+        addEl1(0)
+        addEl(0)
+        addClass(0)
+        countNewEl = countNewEl + 1
+      }
+      else {
+        addEl1(countNewEl)
+        addEl(countNewEl)
+        addClass(countNewEl)
+        countNewEl = countNewEl + 1
+      }
+      console.log('countNewEl -> ',countNewEl);
+    }
+    // function addElSaja(){
+    //   const _divParent = document.createElement("div")
+    //   const _node = document.createTextNode("This is new p.");
+    //   _divParent.appendChild(_node);
+    //   element.appendChild(_divParent);
+    // }
+    function addEl1(n){
+      const element = document.getElementById("tempatTampil");
+      const divParent = document.createElement("div");
+      element.appendChild(divParent);
+      element.getElementsByTagName('div')[n].id = 'div'+n
+      const elementParent = document.getElementById('div'+n);
+      elementParent.classList.add('d-flex')
+      elementParent.classList.add('flex-column')
+    }
+    function addEl(n){
+      const para = document.createElement("p");
+      const node = document.createTextNode("This is new p.");
+      const para2 = document.createElement("b");
+      const node2 = document.createTextNode("This is new b.");
+      const elementParent = document.getElementById('div'+n);
+      para.appendChild(node);
+      elementParent.appendChild(para);
+      para2.appendChild(node2);
+      elementParent.appendChild(para2);
+    }
+    function addClass(n) {
+      const elementParent = document.getElementById('div'+n);
+      elementParent.getElementsByTagName('p')[0].classList.add("new-style");
+      elementParent.getElementsByTagName('p')[0].classList.add("m-0");
+      elementParent.getElementsByTagName('b')[0].classList.add("new-style-2");
+    }
+    function delEl(){
+      if (countNewEl > 0){
+        document.getElementById('div'+(countNewEl-1)).remove();
+        countNewEl = countNewEl - 1
+      }
+    }
+    // function delClass() {
+    //   element.getElementsByTagName('p')[0].classList.remove("new-style");
+    // }
+    // function addId() {
+    //   element.getElementsByTagName('p')[0].id = 'firstP'
+    // }
+    // function delId() {
+    //   element.getElementsByTagName('p')[0].id = ''
+    // }
+  </script>
+</body>
+</html>

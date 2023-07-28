@@ -21,6 +21,7 @@ ini_set('display_errors', 0);
 			</div>
 		</section>
 		<hr>
+		<!-- <button class="btn btn-info"><a href="coba.html">coba</a></button> -->
 		<section class="my-3">
 			<div class="d-flex gap-2 gap-md-4 justify-content-center align-items-center">
 				<div class="">
@@ -164,7 +165,7 @@ ini_set('display_errors', 0);
 					?>
 					<tr>
 						<td><?php echo $no++ ?></td>
-						<td><?php echo $b['id'] ?></td>
+						<td><?php echo $b['id_transaksi'] ?></td>
 						<td><?php echo $b['tanggal'] ?></td>
 						<td><?php echo $b['nama'] ?></td>
 						<td class="text-end">Rp.<?php echo number_format($b['harga']) ?>,-</td>
@@ -269,11 +270,17 @@ ini_set('display_errors', 0);
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Penjualan</h1>
+				<div class="modal-title fs-5 d-flex gap-2">
+					<div class="" id="exampleModalLabel">Tambah Penjualan</div>
+					<button class="btn btn-light position-relative">
+						<i class="bi bi-cart"></i>
+						<span id="cartQty" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"></span>
+				</button>
+				</div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-				<form name="formBarangLaku" action="barang_laku_act.php" method="post" class="d-flex flex-column gap-3 needs-validation" novalidate>
+			<!-- <form name="formBarangLaku" action="barang_laku_act.php" method="post" class="d-flex flex-column gap-3 needs-validation" novalidate>
+				<div class="modal-body">
 					<div class="form-group">
 						<label>Tanggal</label>
 						<input name="tgl" type="date" class="form-control" id="tgl" autocomplete="off" required>
@@ -307,8 +314,62 @@ ini_set('display_errors', 0);
 					</div>
 				</div>
 				<div class="modal-footer">
-					<input type="reset" class="buttonku-1" value="Reset">												
-					<!-- <input type="submit" class="buttonku-1-primary" value="Tambah Transaksi Penjualan"> -->
+					<input type="reset" class="buttonku-1" value="Reset">
+					<button class="buttonku-1-primary" onclick="cekDataBarangLaku()">Tambah Transaksi Penjualan</button>
+				</div>
+			</form> -->
+			<form name="formBarangLaku" action="barang_laku_act.php" method="get" class="needs-validation" novalidate>
+				<div id="inputCartName" class="d-flex flex-column gap-3 modal-body">
+					<div class="form-group">
+						<label>Tanggal</label>
+						<input name="inputCartQty" type="number" id="inputCartQty" hidden>
+						<input name="tgl" type="date" class="form-control" id="tgl" autocomplete="off" required>
+						<div class="invalid-feedback">Tanggal belum diisi.</div>
+					</div>	
+					<div class="form-group">
+						<label>Silahkan Pilih Barang</label>
+						<div class="d-flex gap-1 flex-wrap">
+							<?php
+							// $_SESSION["cartQty"] = 0;
+							$brg=mysqli_query($koneksi, "select * from barang order by nama");
+							while($b=mysqli_fetch_array($brg)){
+								echo '
+								<div class="badge text-bg-secondary" style="cursor: pointer;" onclick="actionCartQty(\'+\', \''. $b["nama"] .'\'), addNewElement(\''. $b["nama"] .'\', \''. $b["sisa"] .'\')">'. $b["nama"] .'</div>
+								';
+							}
+							?>
+						</div>
+						<div class="invalid-feedback">Nama Barang belum dipilih.</div>
+					</div>
+					<!-- <div>
+						<div>cartQty : <?php echo $_SESSION["cartQty"] ?></div>
+					</div> -->
+					<!-- <div>
+						<div id="cartName"></div>
+						<div class="btn btn-light" onclick="actionCartQty('+'), addNewElement()">add cartName</div>
+						<div class="btn btn-light" onclick="actionCartQty('+'), actionCartName('+')">add cartName</div>
+						<div class="btn btn-light" onclick="actionCartQty('-'), delEl(0)">del cartName</div>
+						<div class="btn btn-light" onclick="actionCartQty('-'), actionCartName('-')">del cartName</div>
+					</div> -->
+					<!-- <div class="form-group"></div> -->
+					<div id="tempatTampil"></div>
+					<!-- <div>
+						<div class="btn btn-info" onclick="actionCartQty('+')">add cartQty</div>
+						<div class="btn btn-warning" onclick="actionCartQty('-')">del cartQty</div>
+					</div> -->
+					<!-- <div class="form-group">
+						<label>Jumlah Barang Terjual</label>
+						<input name="jumlahLaku" type="number" min="0" class="form-control" placeholder="Jumlah Barang Terjual .." autocomplete="off" required>
+						<div class="invalid-feedback">Jumlah belum diisi.</div>
+					</div>																	 -->
+					<!-- <div class="form-check">
+						<input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+						<label class="form-check-label" for="invalidCheck">Pastikan jumlah sisa stock barang lebih banyak dari jumlah barang yang terjual.</label>
+						<div class="invalid-feedback">Kotak ini harus dicentang.</div>
+					</div> -->
+				</div>
+				<div class="modal-footer">
+					<input type="reset" class="buttonku-1" value="Reset" onclick="delElAll()">
 					<button class="buttonku-1-primary" onclick="cekDataBarangLaku()">Tambah Transaksi Penjualan</button>
 				</div>
 			</form>
@@ -316,6 +377,227 @@ ini_set('display_errors', 0);
   </div>
 </div>
 <script>
+  let countNewEl = 0
+	let newEl = 0
+	let isNewEl = false
+	
+	function addNewElement(n, m) {
+		let cekInput = document.getElementById(n)
+		if (cekInput){
+			console.log('sudah ada');
+			document.getElementById(n).value ++
+		}
+		else {
+			console.log('belum ada');
+			console.log('countNewEl -> ',countNewEl);
+			if (countNewEl == 0){
+				addEl1(0)
+				addEl(0)
+				addClass(0, n, m)
+				countNewEl = countNewEl + 1
+				console.log('kosong');
+			}
+			else {
+				addEl1(countNewEl)
+				addEl(countNewEl)
+				addClass(countNewEl, n, m)
+				countNewEl = countNewEl + 1
+				console.log('isi');
+			}
+			console.log('countNewEl -> ',countNewEl);
+		}
+	}
+	function addEl1(n){
+		const element = document.getElementById("tempatTampil");
+		const divParent = document.createElement("div");
+		element.appendChild(divParent);
+		let elDivLength = Number(element.getElementsByTagName('div').length - 1)
+		element.getElementsByTagName('div')[elDivLength].id = 'div'+n
+		const elementParent = document.getElementById('div'+n);
+		elementParent.classList.add('d-flex')
+		elementParent.classList.add('flex-column')
+		elementParent.classList.add("mb-3")
+		elementParent.classList.add("border")
+		elementParent.classList.add("p-2")
+	}
+	function addEl(n){
+		const paraTitle = document.createElement("span");
+		const paraTitleLeft = document.createElement("span");
+		const nodeTitleLeft = document.createTextNode("Barang Laku");
+		// const nodeTitleLeft = document.createTextNode("Barang "+Number(n+1));
+		const paraTitleRight = document.createElement("button");
+		const nodeTitleRight = document.createTextNode("Hapus");
+		const para = document.createElement("label");
+		const node = document.createTextNode("Nama");
+		const para2 = document.createElement("input");
+		
+		const para_ = document.createElement("label");
+		const node_ = document.createTextNode("Terjual");
+		const para2_ = document.createElement("input");
+		const elementParent = document.getElementById('div'+n);
+		
+		const para__ = document.createElement("label");
+		const node__ = document.createTextNode("Stok");
+		const para2__ = document.createElement("input");
+
+		elementParent.appendChild(paraTitle);
+		paraTitleLeft.appendChild(nodeTitleLeft);
+		elementParent.getElementsByTagName('span')[0].appendChild(paraTitleLeft);
+		paraTitleRight.appendChild(nodeTitleRight);
+		elementParent.getElementsByTagName('span')[0].appendChild(paraTitleRight);
+
+		para.appendChild(node);
+		elementParent.appendChild(para);
+		elementParent.appendChild(para2);
+		
+		para__.appendChild(node__);
+		elementParent.appendChild(para__);
+		elementParent.appendChild(para2__);
+		
+		para_.appendChild(node_);
+		elementParent.appendChild(para_);
+		elementParent.appendChild(para2_);
+	}
+	function addClass(n, m, l) {
+		const elementParent = document.getElementById('div'+n)
+		// const inputEl = elementParent.getElementsByTagName('input')
+		elementParent.getElementsByTagName('input')[0].classList.add("form-control");
+		elementParent.getElementsByTagName('input')[1].classList.add("form-control");
+		elementParent.getElementsByTagName('input')[2].classList.add("form-control");
+		elementParent.getElementsByTagName('input')[0].readOnly = true
+		elementParent.getElementsByTagName('input')[0].name = 'nama'+n
+		elementParent.getElementsByTagName('input')[1].value = l
+		elementParent.getElementsByTagName('input')[1].readOnly = true
+		elementParent.getElementsByTagName('input')[2].type = 'number'
+		elementParent.getElementsByTagName('input')[2].min = '1'
+		elementParent.getElementsByTagName('input')[2].value = '1'
+		elementParent.getElementsByTagName('input')[2].id = m
+		elementParent.getElementsByTagName('input')[2].name = 'jumlahLaku'+n
+		
+		const spanEl = elementParent.getElementsByTagName('span')[0]
+		spanEl.classList.add("d-flex");
+		spanEl.classList.add("justify-content-between");
+		
+		const spanElButton = spanEl.getElementsByTagName('button')
+		spanElButton[0].classList.add("btn");
+		spanElButton[0].classList.add("btn-danger");
+		spanElButton[0].onclick = function(){
+			document.getElementById('div'+n).remove();
+			console.log('countNewEl = ', countNewEl);
+			actionCartQty('-', m)
+		};
+		
+		cart.name.push(m)
+		elementParent.getElementsByTagName('input')[0].value = m
+	}
+	function delElAll(){
+		if (countNewEl > 0){
+			for (let a = 0; a < countNewEl; a++){
+				document.getElementById('div'+a).remove();
+			}
+		}
+	}
+	function delEl(n){
+		if (countNewEl > 0){
+			document.getElementById('div'+n).remove();
+			// document.getElementById('div'+(countNewEl-1)).remove();
+			countNewEl = countNewEl - 1
+		}
+	}
+
+	let barang = [{
+		id: null,
+		nama: null,
+		jumlah: null,
+		harga: null,
+		sisa: null,
+		jenis: null,
+		supplier: null,
+		modal: null,
+	}]
+	let cart = {
+		name: [],
+		qty: 0
+	}
+	localStorage.setItem('cartQty', cart.qty)
+	let cartQty = localStorage.getItem('cartQty')
+	if(cartQty > 0){
+		document.getElementById('cartQty').innerText = cartQty;
+	}
+	function setGetCartQty(){
+		localStorage.setItem('cartQty', cart.qty)
+		let cartQty = localStorage.getItem('cartQty')
+		document.getElementById('cartQty').innerText = cartQty;
+	}
+	function actionCartQty(s, t){
+		if (s === '+'){
+			let cekInput = document.getElementById(t)
+			if (cekInput){
+				console.log('barang sudah ada : ', t);
+			}
+			else {
+				cart.qty++;
+				setGetCartQty()
+				document.getElementById('inputCartQty').value = cart.qty
+			}
+		}
+		else if (s === '-'){
+			if(cart.qty > 0){
+				cart.qty--;
+				setGetCartQty()
+				if(cart.qty === 0){
+					document.getElementById('cartQty').innerText = ''
+				}
+				document.getElementById('inputCartQty').value = cart.qty
+			}
+		}
+	}
+	function actionCartName(s, n){
+		if (s === '+'){
+			cart.name.push(n)
+			document.getElementById('cartName').innerText = cart.namespace
+
+			const divNama = document.createElement("div");
+			const labelNama = document.createElement("label");
+			const labelNama2 = document.createElement("label");
+			const inputNama = document.createElement("input");
+			const inputNama2 = document.createElement("input");
+			// Create a class attribute:
+			const attClass = document.createAttribute("class");
+
+			// Set the value of the class attribute:
+			attClass.value = "form-control";
+
+			labelNama.innerHTML = "Nama Barang";
+			const inputCartName = document.getElementById("inputCartName")
+			inputCartName.appendChild(divNama);
+			inputCartName.appendChild(labelNama);
+			inputCartName.appendChild(inputNama);
+			labelNama2.innerHTML = "Jumlah";
+			inputCartName.appendChild(labelNama2);
+			inputCartName.appendChild(inputNama2);
+			if (!isNewEl){
+				const h1 = inputCartName.getElementsByTagName("input")[newEl];
+				h1.setAttributeNode(attClass);
+				h1.value = n
+				isNewEl = true
+				newEl = newEl + 1
+				// console.log('masih 0 ', newEl);
+			}
+			else {
+				const h1 = document.getElementById("inputCartName").getElementsByTagName("input")[newEl++];
+				h1.setAttributeNode(attClass);
+				h1.value = n
+				// console.log('0 -> ', newEl);
+			}
+
+		}
+		else if (s === '-'){
+			cart.name.splice(-1,1)
+			document.getElementById('cartName').innerText = cart.name
+		}
+	}
+
 	let modalHarga = null
 
 	if(typeof window.history.pushState == 'function') {
