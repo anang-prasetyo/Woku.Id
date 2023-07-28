@@ -66,6 +66,28 @@ else {
       mysqli_query($koneksi, "insert into barang_laku values('$idTransaksi','$tgl','$nama[$a]','$jumlah[$a]','$harga[$a]','$total_harga[$a]','$labaa[$a]', '')")or die(mysql_error($koneksi));
       header("location:barang_laku.php");
     }
+    else{
+      if ($jumlahStock[$a] == 0){
+        echo '
+        <script>
+        let text = "Stock ' . $nama[$a] . ' telah habis. Silahkan membeli lagi produk tersebut atau periksa kembali data anda.";
+        alert(text)
+        window.open("barang_laku.php", "_self")
+        localStorage.setItem("tambahPenjualanErrorMsg", text)
+        </script>
+        ';
+      }
+      else {
+        echo '
+        <script>
+        let text = "Stock tidak cukup! Tinggal tersisa ' . $jumlahStock[$a] . ' barang, sedangkan anda ingin menambahkan ' . $jumlah[$a] . ' barang. Silahkan periksa kembali data anda.";
+        alert(text)
+        window.open("barang_laku.php", "_self")
+        localStorage.setItem("tambahPenjualanErrorMsg", text)
+        </script>
+        ';
+      }
+    }
   }
 }
 

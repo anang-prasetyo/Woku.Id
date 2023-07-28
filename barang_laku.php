@@ -470,6 +470,7 @@ ini_set('display_errors', 0);
 		elementParent.getElementsByTagName('input')[1].readOnly = true
 		elementParent.getElementsByTagName('input')[2].type = 'number'
 		elementParent.getElementsByTagName('input')[2].min = '1'
+		elementParent.getElementsByTagName('input')[2].max = l
 		elementParent.getElementsByTagName('input')[2].value = '1'
 		elementParent.getElementsByTagName('input')[2].id = m
 		elementParent.getElementsByTagName('input')[2].name = 'jumlahLaku'+n
