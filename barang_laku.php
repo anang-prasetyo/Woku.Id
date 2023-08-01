@@ -175,9 +175,14 @@ ini_set('display_errors', 0);
 							<div class="d-flex gap-1 justify-content-center align-items-center">
 								<a id="btnDesktop" href="edit_laku.php?id=<?php echo $b['id']; ?>" class="d-none d-lg-inline-flex buttonku-1">Edit</a>
 								<a id="btnDesktop" onclick="if(confirm('Apakah anda yakin ingin menghapus data ini ??')){ location.href='hapus_laku.php?id=<?php echo $b['id']; ?>&jumlah=<?php echo $b['jumlah'] ?>&nama=<?php echo $b['nama']; ?>' }" class="d-none d-lg-inline-flex buttonku-1-danger">Hapus</a>
+								<a id="btnDesktop" href="cetak_barang_laku2.php?id_transaksi=<?php echo $b['id_transaksi']; ?>" class="d-none d-lg-inline-flex buttonku-1" target="_blank">Cetak</a>
 								
 								<button id="btnMobile" class="d-inline-flex d-lg-none buttonku-1" onclick="window.location.href='edit_laku.php?id=<?php echo $b['id']; ?>';"><i class="bi-pencil-square"></i></button>
 								<button id="btnMobile" class="d-inline-flex d-lg-none buttonku-1-danger" onclick="if(confirm('Apakah anda yakin ingin menghapus data ini ??')){ location.href='hapus_laku.php?id=<?php echo $b['id']; ?>&jumlah=<?php echo $b['jumlah'] ?>&nama=<?php echo $b['nama']; ?>' }"><i class="bi-trash"></i></button>
+
+								<!-- <button id="btnMobile" class="d-inline-flex d-lg-none buttonku-1" onclick="window.open('cetak_barang_laku.php','_blank')"><i class="bi-printer"></i></button> -->
+								<!-- <button id="btnMobile" class="d-inline-flex d-lg-none buttonku-1" onclick="window.location.href='cetak_barang_laku2.php?id_transaksi=<?php echo $b['id_transaksi']; ?>', '_blank'"><i class="bi-printer"></i></button> -->
+								<a id="btnMobile" href="cetak_barang_laku2.php?id_transaksi=<?php echo $b['id_transaksi']; ?>" class="d-inline-flex d-lg-none" target="_blank"><button class=" buttonku-1"><i class="bi-printer"></i></button></a>
 							</div>
 						</td>
 					</tr>

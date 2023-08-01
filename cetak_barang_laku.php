@@ -60,7 +60,7 @@
         ?>
         <tr>
           <td><?php echo $i++; ?></td>
-          <td><?php echo $row["id"]; ?></td>
+          <td><?php echo $row["id_transaksi"]; ?></td>
           <td><?php echo $row["tanggal"]; ?></td>
           <td><?php echo $row["nama"]; ?></td>
           <td class="text-end">Rp. <?php echo number_format($row["harga"]); ?>,-</td>
